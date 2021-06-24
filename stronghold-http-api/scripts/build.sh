@@ -3,20 +3,28 @@ set -euo pipefail
 cd "$(dirname "$0")"
 cd ../../
 
+if ! command -v jq &> /dev/null; then
+    echo "jq is not installed but is required"
+    exit 1
+fi
+
 if ! command -v rsync &> /dev/null; then
     echo "rsync is not installed but is required"
     exit 1
 fi
 
+echo "Removing lifecycle scripts"
+cat <<< "$(jq 'del(.scripts.prebuild)' < package.json)" > package.json
+cat <<< "$(jq 'del(.scripts.preinstall)' < package.json)" > package.json
+
 echo "Building WASM"
-( cd stronghold-wasm && yarn run build:node )
+( cd ironfish-wasm && yarn run build:node )
 
 echo "Installing from lockfile"
-rm -rf ./node_modules
-yarn --non-interactive --frozen-lockfile --ignore-scripts
+yarn --non-interactive --frozen-lockfile
 
-echo "Building Stronghold HTTP API project"
-cd stronghold-http-api
+echo "Building Iron Fish HTTP API project"
+cd ironfish-http-api
 yarn build
 
 echo "Outputting build to $PWD/build.api"
@@ -33,9 +41,9 @@ echo "Copying build"
 cp -R ../../build ./
 
 echo "Copying node_modules"
-rsync -L -avrq --exclude='stronghold-http-api' ../../../node_modules ./
+rsync -L -avrq --exclude='ironfish-http-api' ../../../node_modules ./
 
-echo "Packaging build into stronghold-http-api.tar.gz"
+echo "Packaging build into ironfish-http-api.tar.gz"
 cd ..
-mv package stronghold-http-api
-tar -cf stronghold-http-api.tar.gz stronghold-http-api
+mv package ironfish-http-api
+tar -cf ironfish-http-api.tar.gz ironfish-http-api
