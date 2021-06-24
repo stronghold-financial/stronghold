@@ -5,16 +5,16 @@ COPY ./ ./
 
 RUN \
     apt-get update && \
-    apt-get install rsync -y && \
+    apt-get install jq rsync -y && \
     curl https://sh.rustup.rs -sSf | sh -s -- -y && \
     curl https://rustwasm.github.io/wasm-pack/installer/init.sh -sSf | sh -s -- -y && \
-    ./stronghold-rosetta-api/scripts/build.sh
+    ./ironfish-rosetta-api/scripts/build.sh
 
 FROM node:14.16.0
 EXPOSE 8080:8080
 
 WORKDIR /usr/src
-COPY --from=build /stronghold-rosetta-api/build.rosetta/stronghold-rosetta-api ./app
+COPY --from=build /ironfish-rosetta-api/build.rosetta/ironfish-rosetta-api ./app
 
 ENV NODE_ENV production
 WORKDIR /usr/src/app
