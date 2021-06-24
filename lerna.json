@@ -1,0 +1,16 @@
+{
+  "packages": [
+    "config/eslint-config-stronghold-react",
+    "config/eslint-config-stronghold",
+    "config/monorepo-template-library",
+    "stronghold-cli",
+    "stronghold-http-api",
+    "stronghold-rosetta-api",
+    "stronghold",
+    "stronghold-wasm/nodejs",
+    "stronghold-wasm/web"
+  ],
+  "version": "independent",
+  "npmClient": "yarn",
+  "useWorkspaces": true
+}

@@ -1,0 +1,27 @@
+[package]
+name = "stronghold_wasm"
+version = "0.1.0"
+authors = ["Stronghold <camerondball@yahoo.com> (https://stronghold.financial)"]
+edition = "2018"
+license = "MIT"
+
+[dev-dependencies]
+zcash_primitives = {git = "https://github.com/iron-fish/librustzcash.git", rev = "8186d84"}
+pairing = { git = "https://github.com/iron-fish/librustzcash.git", rev = "8186d84", version = "0.16", features = ["expose-arith"]}
+rand = {version = "0.7", features = ["wasm-bindgen"]}
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[dependencies]
+stronghold_rust= { path = "../stronghold-rust" }
+js-sys = "0.3.48"
+wasm-bindgen = "0.2.71"
+
+[profile.release]
+opt-level = 3
+lto = true
+
+[package.metadata.wasm-pack.profile.release]
+wasm-opt = ["-O4", "-g", "--enable-mutable-globals"]
+
+[lib]
+crate-type = ["cdylib", "rlib"]

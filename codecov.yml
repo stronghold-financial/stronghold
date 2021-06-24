@@ -1,0 +1,71 @@
+ignore:
+  - config/*
+  - stronghold-wasm/*
+  - stronghold/src/aaptain/testUtilities/*
+comment: false
+github_checks:
+  annotations: false
+coverage:
+  fixes:
+    - "/home/runner/work/stronghold/stronghold/::/"
+  status:
+    patch:
+      default:
+        target: auto
+        threshold: 50%
+    project:
+      default:
+        target: 63%
+      stronghold-rust:
+        target: 53%
+        flags:
+          - stronghold-rust
+      stronghold-cli:
+        target: 50%
+        flags:
+          - stronghold-cli
+      stronghold:
+        target: 60%
+        flags:
+          - stronghold
+      stronghold-http-api:
+        target: 70%
+        flags:
+          - stronghold-http-api
+      stronghold-rosetta-api:
+        target: 75%
+        flags:
+          - stronghold-rosetta-api
+      event:
+        target: 84%
+        flags:
+          - event
+      logger:
+        target: 90%
+        flags:
+          - logger
+      serde:
+        target: 90%
+        flags:
+          - serde
+flags:
+  stronghold-rust:
+    paths:
+      - stronghold-rust
+    carryforward: true
+  stronghold-cli:
+    paths:
+      - stronghold-cli
+    carryforward: true
+  stronghold:
+    paths:
+      - stronghold
+    carryforward: true
+  stronghold-http-api:
+    paths:
+      - stronghold-http-api
+    carryforward: true
+  stronghold-rosetta-api:
+    paths:
+      - stronghold-rosetta-api
+    carryforward: true

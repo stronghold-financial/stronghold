@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+    node1:
+        container_name: stronghold-beta-1
+        image: ghcr.io/stronghold-financial/stronghold-beta:latest
+        ports:
+            - "8001:8001"
+            - "9001:9001"
+        networks:
+            - node_network
+        restart: unless-stopped    
+        command: start -v --name node1 --rpc.tcp --rpc.tcp.host=0.0.0.0 --rpc.tcp.port=8001 --port 9001 --bootstrap='' --forceMining --datadir /strongholddata
+        volumes:
+            - ~/.stronghold-beta-1:/strongholddata
+
+    node2:
+        container_name: stronghold-beta-2
+        image: ghcr.io/stronghold-financial/stronghold-beta:latest
+        ports:
+            - "8002:8002"
+            - "9002:9002"
+        networks:
+            - node_network
+        restart: unless-stopped     
+        command: start -v --name node2 --rpc.tcp --rpc.tcp.host=0.0.0.0 --rpc.tcp.port=8002 --port 9002 --bootstrap='node1:9001' --datadir /strongholddata
+        volumes:
+            - ~/.stronghold-beta-2:/strongholddata
+
+    miner:
+        container_name: stronghold-miner
+        image: ghcr.io/stronghold-financial/stronghold-beta:latest
+        depends_on:
+            - "node1"
+        networks:
+            - node_network
+        restart: unless-stopped    
+        command: miners:start --rpc.tcp --rpc.tcp.host=node1 --rpc.tcp.port=8001
+
+networks:
+    node_network:
+        

@@ -1,0 +1,10 @@
+{
+  "name": "stronghold-wasm",
+  "author": "Stronghold <camerondball@yahoo.com> (https://stronghold.financial)",
+  "license": "MIT",
+  "scripts": {
+    "build:node": "node build.js --node",
+    "build:web": "node build.js --web",
+    "build": "node build.js"
+  }
+}

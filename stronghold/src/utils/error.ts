@@ -1,0 +1,26 @@
+
+/**
+ * This is used to unwrap a message from an error if its possible otherwise just renders the error as JSON
+ */
+function extractMessage(error: unknown): string {
+  if (!error) return ''
+  if (error instanceof Error) return error.message
+  if (typeof error === 'string') return error
+  return JSON.stringify(error)
+}
+
+/**
+ * This is used to unwrap a message from an error
+ *
+ * Falls back to JSON.stringify the error if we cannot get the message
+ */
+export function renderError(error: unknown, stack = false): string {
+  if (stack && error instanceof Error && error.stack) {
+    // stack also contains the error message
+    return error.stack
+  }
+
+  return extractMessage(error)
+}
+
+export const ErrorUtils = { renderError }

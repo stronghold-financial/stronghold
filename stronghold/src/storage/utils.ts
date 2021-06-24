@@ -1,0 +1,21 @@
+
+import { Platform } from '../platform'
+import { IDatabase } from './database'
+import { LevelupDatabase } from './levelup'
+import type LevelDOWN from 'leveldown'
+
+export function createDB(options: { location: string }): IDatabase {
+  const runtime = Platform.getRuntime()
+
+  if (runtime.type === 'node') {
+    return createLevelupDB(options.location)
+  }
+
+  throw new Error(`No default fileSystem for ${String(runtime)}`)
+}
+
+export function createLevelupDB(path: string): LevelupDatabase {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  const leveldown = require('leveldown') as typeof LevelDOWN
+  return new LevelupDatabase(leveldown(path))
+}
