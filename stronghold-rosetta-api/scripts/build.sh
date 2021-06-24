@@ -3,19 +3,28 @@ set -euo pipefail
 cd "$(dirname "$0")"
 cd ../../
 
+if ! command -v jq &> /dev/null; then
+    echo "jq is not installed but is required"
+    exit 1
+fi
+
 if ! command -v rsync &> /dev/null; then
     echo "rsync is not installed but is required"
     exit 1
 fi
 
+echo "Removing lifecycle scripts"
+cat <<< "$(jq 'del(.scripts.prebuild)' < package.json)" > package.json
+cat <<< "$(jq 'del(.scripts.preinstall)' < package.json)" > package.json
+
 echo "Building WASM"
-( cd stronghold-wasm && yarn run build:node )
+( cd ironfish-wasm && yarn run build:node )
 
 echo "Installing from lockfile"
-yarn --non-interactive --frozen-lockfile --ignore-scripts
+yarn --non-interactive --frozen-lockfile
 
 echo "Building Rosetta project"
-cd stronghold-rosetta-api
+cd ironfish-rosetta-api
 yarn build
 
 echo "Outputting build to $PWD/build.rosetta"
@@ -32,9 +41,9 @@ echo "Copying build"
 cp -R ../../build ./
 
 echo "Copying node_modules"
-rsync -L -avrq --exclude='stronghold-rosetta-api' ../../../node_modules ./
+rsync -L -avrq --exclude='ironfish-rosetta-api' ../../../node_modules ./
 
-echo "Packaging build into stronghold-rosetta-api.tar.gz"
+echo "Packaging build into ironfish-rosetta-api.tar.gz"
 cd ..
-mv package stronghold-rosetta-api
-tar -cf stronghold-rosetta-api.tar.gz stronghold-rosetta-api
+mv package ironfish-rosetta-api
+tar -cf ironfish-rosetta-api.tar.gz ironfish-rosetta-api
