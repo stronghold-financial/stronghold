@@ -34,7 +34,7 @@ Once your environment is setup - you can run the CLI by following [these directi
    1. Run `yarn test:watch` if you want the tests to run on change
    1. Run `test:coverage:html` if you want to export the coverage in an easy to use format (open the index.html file in the coverage folder of the project )
 
-## Structure of the repository
+## Structure of the repository:
 
  - [stronghold](./stronghold/README.md): The library that contains the StrongholdSDK and all Stronghold code written in Typescript.
  - [stronghold-cli](./stronghold-cli/README.md): The main client for Stronghold as of today. It is a command line interface built on Node. More details on [our documentation](https://stronghold.financial/docs/onboarding/iron-fish-tutorial).
