@@ -1,7 +1,7 @@
 
 import { Assert } from '../../../assert'
 import { GENESIS_BLOCK_PREVIOUS } from '../../../consensus'
-import { makeDbName, makeDbPath } from '../../helpers/storage'
+import { makeDbPath } from '../../helpers/storage'
 import { RangeHasher } from '../../../merkletree'
 import {
   SerializedTestTransaction,
@@ -44,30 +44,6 @@ export async function addNotes(
  * There is a chance this functionality could be useful for more than testing.
  * It could be moved to a method on Blockchain.
  */
-export async function syncCommitments(
-  header: BlockHeader<
-    string,
-    string,
-    TestTransaction,
-    string,
-    string,
-    SerializedTestTransaction
-  >,
-  blockchain: Blockchain<
-    string,
-    string,
-    TestTransaction,
-    string,
-    string,
-    SerializedTestTransaction
-  >,
-): Promise<void> {
-  header.noteCommitment.size = await blockchain.notes.size()
-  header.noteCommitment.commitment = await blockchain.notes.rootHash()
-  header.nullifierCommitment.size = await blockchain.nullifiers.size()
-  header.nullifierCommitment.commitment = await blockchain.nullifiers.rootHash()
-}
-
 /**
  * Make a block that suits the two trees currently on the chain. All notes/nullifiers
  * that were added to the Blockchain (using chain.notes.add, not chain.AddNote)
