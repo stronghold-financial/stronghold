@@ -1,6 +1,8 @@
 
 # Stronghold
 
+Project on hold.
+
 Stronghold is a Layer 1 blockchain that provides the strongest privacy guarantees on every single transaction. Leveraging zero-knowledge proofs (zk-SNARKs), and the highest industry standards for encryption.
 
 See https://stronghold.financial
